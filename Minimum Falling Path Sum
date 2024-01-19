@@ -1,0 +1,10 @@
+class Solution(object):
+    def minFallingPathSum(self, matrix):
+        matLen = len(matrix)
+        for i in range(matLen-2,-1,-1):
+            for j in range (matLen):
+                left = matrix[i][j]+matrix[i+1][j-1] if j > 0 else 999999999
+                mid = matrix[i][j]+matrix[i+1][j] 
+                right = matrix[i][j]+matrix[i+1][j+1] if j < matLen-1 else 999999999
+                matrix[i][j] = min(left,mid,right)
+        return min(matrix[0])
