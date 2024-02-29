@@ -1,0 +1,43 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
+        # Base case: If the root is None, return an empty list
+        if root is None:
+            return True
+
+        # Use deque as a queue for BFS traversal
+        queue = deque()
+        queue.append(root)
+        level = 0  # The current level of the BFS traversal
+
+        while queue:
+            # The number of nodes at the current level (used to validate increasing or decreasing order)
+            level_length = len(queue)
+            prev_val = None  # The value of the previous node at the current level
+            for _ in range(level_length):
+                node = queue.popleft()
+
+                # Validate the value of the current node based on the level
+                if level % 2 == 0:  # Even-indexed level
+                    if node.val % 2 != 1 or (prev_val is not None and prev_val >= node.val):
+                        return False
+                else:  # Odd-indexed level
+                    if node.val % 2 != 0 or (prev_val is not None and prev_val <= node.val):
+                        return False
+
+                prev_val = node.val
+
+                # Add the children of the current node to the queue
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+            level += 1  # Move to the next level
+
+        return True
