@@ -1,0 +1,33 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def addOneRow(self, root: Optional[TreeNode], val: int, depth: int) -> Optional[TreeNode]:
+        
+        level = 1
+        if depth == 1:
+            return TreeNode(val, root)
+        
+        def addNode(curLevel, node):
+            if not node:
+                return 
+            
+            #Checking the depth -1 beacuse I want to add the node at the parent level 
+            if curLevel == depth-1: 
+                
+                left = TreeNode(val)
+                right = TreeNode(val)
+                left.left = node.left 
+                right.right = node.right 
+
+                node.left = left
+                node.right = right
+                return 
+            addNode(curLevel+1, node.left)
+            addNode(curLevel+1, node.right)
+            return 
+        addNode(level, root)
+        return root         
