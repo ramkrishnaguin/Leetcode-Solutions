@@ -1,0 +1,27 @@
+class Solution:
+    def minFallingPathSum(self, grid: List[List[int]]) -> int:
+        distances = defaultdict(lambda: 100*200)
+        distances[(-1,-1)] = 0 # start node
+
+        pq = [(0, (-1,-1))]
+        while len(pq) > 0:
+            current_distance, current_vertex = heapq.heappop(pq)
+
+            if current_distance > distances[current_vertex]:
+                continue
+            x, y = current_vertex
+            if x == len(grid) - 1: # final row connects to end node only
+                neighbours = [((201, 201), 0)]
+            elif x == y == 201: # end node
+                neigbours = []
+            else:
+                neighbours = [((x+1, j), grid[x+1][j]) for j in range(len(grid[0])) if j != y]
+
+            for neighbor, weight in neighbours:
+                distance = current_distance + weight
+
+                if distance < distances[neighbor]:
+                    distances[neighbor] = distance
+                    heapq.heappush(pq, (distance, neighbor))
+            
+        return distances[(201,201)]
