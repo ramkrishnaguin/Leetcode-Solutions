@@ -1,0 +1,26 @@
+class Solution:
+    def matrixScore(self, g: List[List[int]]) -> int:
+        def flip(l): #Flips all the bits of l
+            x=[]
+            for i in l:
+                x.append(i^1) #To Flip The Bits
+            return x
+        def count(l):
+            return l.count(1)<l.count(0) # returns True if no of 0's excede 1's in l
+        x=len(g)
+        for i in range(x):
+            if g[i][0]==0:
+                g[i]=flip(g[i]) #If the first number in the row is 0, flip the row
+        g=list(zip(*g)) # Transpose of grid
+        x=len(g)
+        for i in range(x):
+            if count(g[i]): # If the count of 0 in the column is greater than the count of 1, flip the column
+                g[i]=flip(g[i])
+        g = zip(*g) # Transpose of g (Giives original matrix which is flipped to maximum sum)
+        res=0
+        for i in g:
+            x=""
+            for j in i:
+                x+=str(j)
+            res+=int(x,2)
+        return res
