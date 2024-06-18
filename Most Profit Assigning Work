@@ -1,0 +1,22 @@
+class Solution:
+    def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
+        # Step 1: Prepare all data
+        if max(worker) < min(difficulty): return 0
+        worker.sort()
+        profit_diff = sorted(list(zip(profit, difficulty)))
+        optimal_profits = [] # monotoric queue
+        # Step 2: Get the OPTIMAL works only
+        for i in range(len(profit_diff) -1, -1, -1):
+            if i == len(profit_diff) -1:
+                optimal_profits.append(profit_diff[i])
+            else:
+                if profit_diff[i][1] < optimal_profits[-1][1]:
+                    optimal_profits.append(profit_diff[i])
+        optimal_profits = [(0,0)] + optimal_profits[::-1] # dummy node (0,0)
+        # Step 3: Get total profit
+        profit_i, total_profit = 0, 0
+        for level in worker:
+            while profit_i+1 < len(optimal_profits) and optimal_profits[profit_i+1][1] <= level:
+                profit_i += 1
+            total_profit += optimal_profits[profit_i][0]
+        return total_profit
