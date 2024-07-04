@@ -1,0 +1,12 @@
+class Solution:
+    def mergeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        slow, fast = head, head.next
+        while slow:
+            count = 0
+            while fast.val != 0:
+                count += fast.val
+                fast = fast.next
+            slow.val = count
+            slow.next = fast.next
+            slow, fast = slow.next, fast.next
+        return head                
