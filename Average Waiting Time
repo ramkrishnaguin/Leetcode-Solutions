@@ -1,0 +1,12 @@
+class Solution:
+    def averageWaitingTime(self, customers: List[List[int]]) -> float:
+        busy_till = -inf
+        total_wait = 0
+        for start, time in customers:
+            if start < busy_till:
+                total_wait += busy_till - start + time
+                busy_till += time
+            else:
+                total_wait += time
+                busy_till = start + time
+        return total_wait / len(customers)
