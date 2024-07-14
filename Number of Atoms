@@ -1,0 +1,41 @@
+class Solution:
+    def countOfAtoms(self, formula: str) -> str:
+        def merge(tar, src, cnt):
+            for s in src:
+                tar[s] += src[s] * cnt
+        def findCount(f, i):
+            val = 0
+            while(i < len(f) and f[i].isdigit()):
+                val = val * 10 + int(f[i])
+                i += 1
+            if val == 0:
+                val = 1
+            return val, i
+        def findEle(f, i):
+            ele = f[i]
+            i += 1
+            while(i < len(f) and f[i].islower()):
+                ele += f[i]
+                i += 1
+            return ele, i
+        stack = [defaultdict(int)]
+        i = 0
+        while i < len(formula):
+            if formula[i] == "(":
+                stack.append(defaultdict(int))
+                i += 1
+            elif formula[i] == ")":
+                top = stack.pop()
+                count, i = findCount(formula, i+1)
+                merge(stack[-1], top, count)
+            elif formula[i].isupper():
+                e, i = findEle(formula, i)
+                count, i = findCount(formula, i)
+                stack[-1][e] += count
+                continue
+        ans = ""
+        for k in sorted(list(stack[-1].keys())):
+            ans += k
+            if stack[-1][k] != 1:
+                ans += str(stack[-1][k])
+        return ans
