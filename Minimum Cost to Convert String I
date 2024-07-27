@@ -1,0 +1,32 @@
+class Solution:
+    def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
+        all_vertex = set() # final all unique charcter in btoh original and destination i.e. graph vertex
+        for x in original: all_vertex.add(x)
+        for x in changed: all_vertex.add(x)
+        n = len(all_vertex)
+        dist_map = defaultdict(lambda: defaultdict(lambda: float('inf')))
+        for v in all_vertex:
+            dist_map[v][v] = 0
+
+        # floyd - warshall 
+        for i in range(len(original)):
+            if changed[i] in dist_map[original[i]]:
+                dist_map[original[i]][changed[i]] = min ( cost[i] , dist_map[original[i]][changed[i]] )
+            else:
+                dist_map[original[i]][changed[i]] = cost[i]
+        
+        for mid_v in all_vertex:
+            for start in all_vertex:
+                for end in all_vertex:
+                    if dist_map[start][mid_v] != float('inf') and  dist_map[mid_v][end] != float('inf'):
+                        dist_map[start][end] = min( dist_map[start][end] , dist_map[start][mid_v] + dist_map[mid_v][end] )
+
+        cost = 0
+        for i in range(len(source)):
+            if source[i] != target[i]:
+                if dist_map[source[i]][target[i]] == float('inf')  :
+                    return -1
+                else:
+                    cost +=dist_map[source[i]][target[i]]        
+
+        return cost
