@@ -1,0 +1,10 @@
+from fractions import Fraction
+from re import findall
+from math import lcm
+
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        ln = list(map(int, re.findall(r"\/(\w+)+",expression)))
+        lm = lcm(*ln)
+        m = Fraction(str(eval(expression))).limit_denominator(lm)
+        return f"{m.numerator}/{m.denominator}"
