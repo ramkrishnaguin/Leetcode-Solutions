@@ -1,0 +1,9 @@
+class Solution:
+    def minLength(self, s: str) -> int:
+        a = []
+        for i in s:
+            if a and ((i == 'B' and a[-1] == 'A') or (i == 'D' and a[-1] == 'C')):
+                a.pop()
+            else:
+                a.append(i)  
+        return len(a)
