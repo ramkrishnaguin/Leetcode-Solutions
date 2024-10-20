@@ -1,0 +1,25 @@
+class Solution:
+    mapping = {
+            "t": True,
+            "f": False,
+            "!": lambda x: not x[0],
+            "&": lambda x: all(x),
+            "|": lambda x: any(x)
+    }
+    values = ("t", "f")
+    ops = ("&", "!", "|")
+
+    def parseBoolExpr(self, expression: str) -> bool:
+        stack = []
+        for c in expression:
+            if c in self.ops:
+                stack.append((c, []))
+            elif c in self.values:
+                stack[-1][1].append(self.mapping[c])
+            elif c == ")":
+                op, vals = stack.pop()
+                res = self.mapping[op](vals)
+                if stack:
+                    stack[-1][1].append(res)
+                else:
+                    return res
