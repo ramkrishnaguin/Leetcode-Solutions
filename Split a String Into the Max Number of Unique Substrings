@@ -1,0 +1,14 @@
+class Solution:
+    def maxUniqueSplit(self, s: str) -> int:
+        def solve(start, vis):
+            if start == len(s):
+                return 0
+            mx = 0
+            for end in range(start + 1, len(s) + 1):
+                sub = s[start: end]
+                if sub not in vis:
+                    vis.add(sub)
+                    mx = max(mx, 1 + solve(end, vis))
+                    vis.remove(sub)
+            return mx
+        return solve(0, set())
