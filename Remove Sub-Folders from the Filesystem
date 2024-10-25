@@ -1,0 +1,3 @@
+class Solution:
+    def removeSubfolders(self, a: List[str]) -> List[str]:
+        return (q:='_') and [q:=v for v in sorted(a) if v.find(q+'/')]
