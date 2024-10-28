@@ -1,0 +1,14 @@
+class Solution:
+    def longestSquareStreak(self, nums: List[int]) -> int:
+        pool = set(nums)
+
+        count = 1
+        for element in pool:
+            n = element
+            localCount = 1
+            while n*n in pool:
+                n = n*n
+                localCount += 1
+            count = max(count, localCount)
+            
+        return count if count != 1 else -1
