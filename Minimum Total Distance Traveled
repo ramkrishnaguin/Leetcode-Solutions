@@ -1,0 +1,24 @@
+class Solution:
+    def minimumTotalDistance(self, robot, factory):
+        m, n = len(robot), len(factory)
+
+        robot.sort()
+        factory.sort()
+
+        @lru_cache(None)
+        def function(i,j,k):
+            if i >= m:
+                return 0
+
+            if j >= n:
+                return float("inf")
+
+            res1 = function(i,j+1,0)
+            res2 = float("inf")
+
+            if k < factory[j][1]:
+                res2 = function(i+1,j,k+1) + abs(robot[i]-factory[j][0])
+
+            return min(res1,res2)
+
+        return function(0,0,0)
