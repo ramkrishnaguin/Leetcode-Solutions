@@ -1,0 +1,8 @@
+class Solution:
+    def canSortArray(self, nums: List[int]) -> bool:
+        grouped_list = [sorted(group) for key, group in groupby(nums, lambda x: bin(x).count('1'))]
+        for i, arr in enumerate(grouped_list):
+            if i and grouped_list[i - 1][-1] > arr[0]:
+                return False
+        return True
+        
