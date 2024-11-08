@@ -1,0 +1,3 @@
+class Solution:
+    def getMaximumXor(self, nums: List[int], maximumBit: int) -> List[int]:
+        return [*map(xor, accumulate(nums, xor), repeat(2**maximumBit-1))][::-1]
