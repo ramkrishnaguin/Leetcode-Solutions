@@ -1,0 +1,18 @@
+class Solution:
+    def takeCharacters(self, s: str, k: int) -> int:
+        a = s.count('a') - k
+        b = s.count('b') - k
+        c = s.count('c') - k
+        if any(i<0 for i in [a, b, c]):
+            return -1
+        dict = defaultdict(int)
+        left = length = res = 0
+        for right in s:
+            dict[right] += 1
+            length += 1
+            while dict['a'] > a or dict['b'] > b or dict['c'] > c:
+                dict[s[left]] -= 1
+                length -= 1
+                left += 1
+            res = max(res, length)
+        return len(s) - res
