@@ -1,0 +1,20 @@
+class Solution:
+    def shortestDistanceAfterQueries(self, n: int, queries: List[List[int]]) -> List[int]:
+        G = {i:[i+1] for i in range(n-1)}
+        G[n-1] = []
+        answer = []
+        len_path = [i for i in range(n)]
+        for a, b in queries:
+            G[a].append(b)
+            if len_path[b] > len_path[a] + 1:
+                len_path[b] = len_path[a] + 1
+                q = deque([b])
+                while q:
+                    v = q.popleft()
+                    p = len_path[v] + 1
+                    for u in G[v]:
+                        if len_path[u] > p:
+                            len_path[u] = p
+                            q.append(u)
+            answer.append(len_path[-1])
+        return answer
