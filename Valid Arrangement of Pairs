@@ -1,0 +1,27 @@
+import collections
+class Solution:
+    def validArrangement(self, pairs: List[List[int]]) -> List[List[int]]:
+        graph = defaultdict(list)
+        degree = defaultdict(int)
+        for src, des in pairs:
+            graph[src].append(des)
+            degree[src] += 1
+            degree[des] -= 1
+
+        # In Line 12 we find out the pendent vertex to start the Euler path 
+        for start in degree:
+            if degree[start]==1:
+                break
+
+        # Line 19 onwards, we visit each node and try to traverse any circuits 
+        # that start and end at that node, the proceed to the other cicuits arising 
+        # from that node or move to the next node and thus do the DFS procedure.
+        res = []
+        def dfs(node):
+            while graph[node]:
+                child = graph[node].pop()
+                dfs(child)
+            res.append(node)
+        dfs(start)
+        res.reverse()
+        return [[res[i],res[i+1]] for i in range(len(res)-1)]
