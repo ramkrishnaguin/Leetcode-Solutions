@@ -1,0 +1,10 @@
+class Solution:
+    def maxTwoEvents(self, events: List[List[int]]) -> int:
+        events.sort(key = itemgetter(1))
+        max_events, curr_max, ans = [0], 0, 0
+        for start, _, value in events:
+            curr_max = max(value, curr_max)
+            max_events.append(curr_max)
+            i = bisect_left(events, start, key = itemgetter(1))
+            ans = max(max_events[i] + value, ans)
+        return ans
