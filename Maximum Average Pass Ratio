@@ -1,0 +1,10 @@
+from sortedcontainers import SortedList
+
+class Solution:
+    def maxAverageRatio(self, classes: List[List[int]], extraStudents: int) -> float:
+        priority = SortedList(classes, key=lambda x: (x[0] + 1) / (x[1] + 1) - x[0] / x[1])
+        while extraStudents:
+            p, t = priority.pop()
+            priority.add((p + 1, t + 1))
+            extraStudents -= 1
+        return sum(p / t for p, t in priority) / len(priority)
