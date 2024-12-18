@@ -1,0 +1,14 @@
+class Solution:
+    def finalPrices(self, prices: List[int]) -> List[int]:
+        monoStack = []
+        discount = [0]*len(prices)
+        for i in range(len(prices)-1, -1, -1):
+            while monoStack and prices[monoStack[-1]]>prices[i]:
+                monoStack.pop()
+            if monoStack:
+                discount[i] = prices[monoStack[-1]]
+            monoStack.append(i)
+        ans = []
+        for i in range(len(prices)):
+            ans.append(prices[i]-discount[i])
+        return ans
