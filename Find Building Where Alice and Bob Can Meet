@@ -1,0 +1,27 @@
+class Solution:
+    def leftmostBuildingQueries(self, heights: List[int], queries: List[List[int]]) -> List[int]:
+        ans = [0]*len(queries)
+        c = [-2]*len(heights)
+        q = sorted([[a, b, i] if a < b else [b, a, i] for i, [a,b] in enumerate(queries)])
+
+        for [a,b, i] in q:
+            
+            if a == b:
+                ans[i] = a
+                continue
+            if heights[b] > heights[a]:
+                ans[i] = b
+                continue
+            if c[a] < -1 or (c[a]>0 and c[a]<b):
+                h = heights[a]
+                z = -1
+                for k in range(b+1, len(heights)):
+                    if heights[k] > h:
+                        z = k
+                        break
+                ans[i] = z
+                c[a] = z
+            else:
+                ans[i] = c[a]
+        
+        return ans
