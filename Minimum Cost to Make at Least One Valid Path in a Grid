@@ -1,0 +1,28 @@
+class Solution:
+    def minCost(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # Right, Left, Down, Up
+        costs = [[float('inf')] * n for _ in range(m)]  # Cost matrix
+        costs[0][0] = 0
+        dq = deque([(0, 0, 0)])  # (cost, x, y)
+        
+        while dq:
+            cost, x, y = dq.popleft()
+            
+            # If reached bottom-right, return cost
+            if x == m - 1 and y == n - 1:
+                return cost
+            
+            # Explore all directions
+            for i, (dx, dy) in enumerate(directions):
+                nx, ny = x + dx, y + dy
+                new_cost = cost + (grid[x][y] != i + 1)  # 0 if direction matches, 1 otherwise
+                
+                if 0 <= nx < m and 0 <= ny < n and new_cost < costs[nx][ny]:
+                    costs[nx][ny] = new_cost
+                    if new_cost == cost:
+                        dq.appendleft((new_cost, nx, ny))  # Add to front for 0 cost
+                    else:
+                        dq.append((new_cost, nx, ny))      # Add to back for 1 cost
+
+        return -1  # If unreachable (shouldn't happen with valid input)
