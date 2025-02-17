@@ -1,0 +1,18 @@
+class Solution:
+    def numTilePossibilities(self, tiles: str) -> int:
+        
+        @cache # avoid re-checking w/ same available chars
+        def backtrack(avail_chars):
+            used = set() # avoid duplicate chars at same index, "A" = "A" = 1 sequence
+            seqs = 0 
+
+            for i, char in enumerate(avail_chars):
+                if char in used: continue # skip if already used char at index
+                used.add(char)
+
+                # +1 since new char at index. add seqs made w/ remaining chars
+                seqs += 1 + backtrack(avail_chars[:i] + avail_chars[i + 1:])
+            
+            return seqs
+
+        return backtrack(tiles)
