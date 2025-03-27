@@ -1,0 +1,32 @@
+class Solution:
+    def minimumIndex(self, nums: List[int]) -> int:
+        n = len(nums)
+        candidate = None
+        count = 0
+        total = 0
+        leftCount = 0
+        
+        for num in nums:
+            if count == 0:
+                candidate = num
+                count = 1
+            elif num == candidate:
+                count += 1
+            else:
+                count -= 1
+                
+        for num in nums:
+            if num == candidate:
+                total += 1
+                
+        for i in range(0, n - 1):
+            if nums[i] == candidate:
+                leftCount += 1
+                
+            leftSize = i + 1
+            rightSize = n - leftSize
+            rightCount = total - leftCount
+            if leftCount * 2 > leftSize and rightCount * 2 > rightSize:
+                return i
+            
+        return -1        
