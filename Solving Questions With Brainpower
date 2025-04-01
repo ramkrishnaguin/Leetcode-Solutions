@@ -1,0 +1,11 @@
+class Solution:
+    def mostPoints(self, questions: List[List[int]]) -> int:
+        n = len(questions)
+        dp = [0] * (n + 1)  
+        for i in range(n - 1, -1, -1):  # Starting from end. 
+            cur_p, jump = questions[i] 
+            next_q = i + jump + 1 # Next question index. 
+            next_p = dp[next_q] if next_q < n else 0 # Next question points. 0 if no question at that index. 
+            dp[i] = max(cur_p + next_p, dp[i + 1]) # Update dp. Use neighbor instead if more points. 
+        
+        return dp[0]
