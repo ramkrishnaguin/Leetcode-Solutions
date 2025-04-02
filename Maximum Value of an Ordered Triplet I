@@ -1,0 +1,15 @@
+class Solution:
+    def maximumTripletValue(self, nums: List[int]) -> int:
+        hi, d, ans = 0, 0, 0
+
+        for x in nums:
+            # Update maximum triplet value found so far
+            ans = max(ans, d * x)
+            
+            # Update the maximum difference found
+            d = max(hi - x, d)
+            
+            # Update the highest value seen so far
+            hi = max(hi, x)
+        
+        return ans
