@@ -1,0 +1,20 @@
+class Solution:
+    def lcaDeepestLeaves(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        
+        def dfs(node):
+            if not node:
+                return 0, None
+            depth_l, root_l = dfs(node.left)
+            depth_r, root_r = dfs(node.right)
+            
+            if depth_l > depth_r: # If the depth of the left subtree is greater than the right one,
+                return depth_l+1, root_l # then increase its depth counter and return its root
+                
+            if depth_l < depth_r: # If the depth of the right subtree is greater than the left one,
+                return depth_r+1, root_r # then increase its depth counter and return its root
+
+            return depth_l+1, node # If the depth of the left and right subtrees are equal, 
+                                # then increase the depth counter of the left subtree and return
+                                # the current node as the LCA of the deepest leaves
+
+        return dfs(root)[1]
