@@ -1,0 +1,17 @@
+class Solution:
+    def minOperations(self, nums: List[int], k: int) -> int:
+        if any(num < k for num in nums):
+            return -1  # Cannot increase numbers, only reduce
+
+        operations = 0
+        seen = set()
+        
+        for num in nums:
+            if num > k:
+                seen.add(num)
+        
+        while seen:
+            seen.remove(max(seen))
+            operations += 1
+
+        return operations        
